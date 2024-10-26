@@ -1,13 +1,13 @@
 using Xunit.Abstractions;
 
-namespace UITests;
+namespace UITests.Android;
 
 [Collection("UICollection")]
-public class IOSTests : BaseTest
+public class AndroidTests : BaseTest
 {
     private readonly ITestOutputHelper _testOutputHelper;
 
-    public IOSTests(AppiumSetup setup, ITestOutputHelper testOutputHelper) : base(setup)
+    public AndroidTests(AppiumSetup setup, ITestOutputHelper testOutputHelper) : base(setup)
     {
         _testOutputHelper = testOutputHelper;
     }

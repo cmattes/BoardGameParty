@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests.iOS", "UITests.iOS\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests.Shared", "UITests.Shared\UITests.Shared.csproj", "{08E97956-A0DC-44BD-8C82-51D0A760D50C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests.Android", "UITests.Android\UITests.Android.csproj", "{91D811C7-E09A-48A4-9D61-AD58D58DACFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,5 +28,9 @@ Global
 		{08E97956-A0DC-44BD-8C82-51D0A760D50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08E97956-A0DC-44BD-8C82-51D0A760D50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08E97956-A0DC-44BD-8C82-51D0A760D50C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91D811C7-E09A-48A4-9D61-AD58D58DACFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91D811C7-E09A-48A4-9D61-AD58D58DACFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91D811C7-E09A-48A4-9D61-AD58D58DACFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91D811C7-E09A-48A4-9D61-AD58D58DACFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

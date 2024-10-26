@@ -1,5 +1,6 @@
 using OpenQA.Selenium.Appium;
-using OpenQA.Selenium.Appium.iOS;
+using OpenQA.Selenium.Appium.Android;
+using OpenQA.Selenium.Appium.Enums;
 
 namespace UITests;
 
@@ -13,23 +14,24 @@ public class AppiumSetup : IDisposable
         // This line starts a local Appium server for you as part of the test run
         AppiumServerHelper.StartAppiumLocalServer();
 
-        var iOSOptions = new AppiumOptions
+        var androidOptions = new AppiumOptions
         {
-            // Specify XCUITest as the driver, typically don't need to change this
-            AutomationName = "XCUITest",
-            // Always iOS for iOS
-            PlatformName = "iOS",
-            // iOS Version
-            PlatformVersion = "18.0",
-            // Don't specify if you don't want a specific device
-            DeviceName = "iPhone 16 Pro Max",
-            // The full path to the .app file to test or the bundle id if the app is already installed on the device
-            App = "com.mattesgames.boardgameparty"
+            // Specify UIAutomator2 as the driver, typically don't need to change this
+            AutomationName = "UIAutomator2",
+            // Always Android for Android
+            PlatformName = "Android"
         };
+
+        androidOptions.AddAdditionalAppiumOption("avd", "Pixel_3a_API_34");
+        androidOptions.AddAdditionalAppiumOption(MobileCapabilityType.NoReset, "true");
+        androidOptions.AddAdditionalAppiumOption(AndroidMobileCapabilityType.AppPackage,
+            "com.mattesgames.boardgameparty");
+        androidOptions.AddAdditionalAppiumOption(AndroidMobileCapabilityType.AppActivity,
+            "com.mattesgames.boardgameparty.MainActivity");
 
         // Note there are many more options that you can use to influence the app under test according to your needs
 
-        driver = new IOSDriver(iOSOptions);
+        driver = new AndroidDriver(androidOptions);
     }
 
     public AppiumDriver App => driver ?? throw new NullReferenceException("AppiumDriver is null");
