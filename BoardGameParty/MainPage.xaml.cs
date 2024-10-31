@@ -1,13 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace BoardGameParty;
+﻿namespace BoardGameParty;
 
 public partial class MainPage : ContentPage
 {
     public MainPage()
     {
         InitializeComponent();
-        
+
         BoardGameCollectionView.ItemsSource = GetBoardGames();
         //BoardGameCollectionView.ItemsSource = null;
     }

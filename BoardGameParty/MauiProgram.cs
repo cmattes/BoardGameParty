@@ -19,15 +19,15 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
-        
-        IServiceCollection services = builder.Services;
+
+        var services = builder.Services;
 
         services.AddSerilog(
             new LoggerConfiguration()
                 .WriteTo.Debug()
-                .WriteTo.File(Path.Combine(FileSystem.Current.AppDataDirectory, "log.txt"), rollingInterval: RollingInterval.Day)
+                .WriteTo.File(Path.Combine(FileSystem.Current.AppDataDirectory, "log.txt"),
+                    rollingInterval: RollingInterval.Day)
                 .CreateLogger());
-        
 
         return builder.Build();
     }
