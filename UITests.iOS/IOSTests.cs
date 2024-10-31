@@ -1,4 +1,7 @@
+using System.Diagnostics;
+using System.Globalization;
 using Xunit.Abstractions;
+using BoardGameParty.Converters;
 
 namespace UITests;
 
@@ -11,19 +14,28 @@ public class IOSTests : BaseTest
     {
         _testOutputHelper = testOutputHelper;
     }
-
-
+    
+    // Arrange
+    // Act
+    // Assert
+    
     [Fact]
-    public void AppLaunches()
-    {
-        App.GetScreenshot().SaveAsFile($"{nameof(AppLaunches)}.png");
-    }
-
-    [Fact]
-    public void Test1()
+    public void Verify_app_launches()
     {
         // Arrange
+        var screenshotName = "app_screenshot.png";
+        
         // Act
+        App.GetScreenshot().SaveAsFile(screenshotName);
+        Thread.Sleep(500);
+        
         // Assert
+        Assert.True(File.Exists(screenshotName), "Failed to gather a screenshot.");
+    }
+    
+    [Fact]
+    public void DoAThing()
+    {
+        
     }
 }

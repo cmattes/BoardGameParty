@@ -11,4 +11,8 @@
         <Content Include="**\*.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="..\BoardGameParty\Settings\xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
 </Project>

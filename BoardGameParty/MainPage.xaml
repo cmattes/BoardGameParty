@@ -5,7 +5,7 @@
              xmlns:converter="clr-namespace:BoardGameParty.Converters"
              x:Class="BoardGameParty.MainPage">
     <ContentPage.Resources>
-        <converter:ObjectNullToBoolConverter x:Key="objNullToBool" />
+        <converter:ObjectIsNullToBoolConverter x:Key="ObjIsNullToBool" />
     </ContentPage.Resources>
 
     <Grid RowDefinitions=".3*, .7*">
@@ -15,7 +15,7 @@
                 <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"
                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large"
                        Text="Select a game to see it's details"
-                       IsVisible="{Binding SelectedItem, Converter={StaticResource objNullToBool}}" />
+                       IsVisible="{Binding SelectedItem, Converter={StaticResource ObjIsNullToBool}}" /> <!-- , ConverterParameter=_logger -->
                 <Image Source="{Binding SelectedItem.GameImageURI}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedItem.GameName}" FontSize="Medium" FontAttributes="Bold" />

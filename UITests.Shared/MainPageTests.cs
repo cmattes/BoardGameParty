@@ -12,9 +12,9 @@ public class MainPageTests : BaseTest
     }
     
     [Fact]
-    public void AppLaunches()
+    public void App_Launches()
     {
-        App.GetScreenshot().SaveAsFile($"{nameof(AppLaunches)}.png");
+        App.GetScreenshot().SaveAsFile($"{nameof(App_Launches)}.png");
     }
     
     [Fact]
