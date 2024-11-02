@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled"
     Title="BoardGameParty">
     
-    <ShellContent Title="Games"
+    <ShellContent Title="Board Game Party"
                   ContentTemplate="{DataTemplate local:MainPage}"
                   Route="MainPage" />
     

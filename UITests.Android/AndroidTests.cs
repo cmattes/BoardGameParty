@@ -1,6 +1,6 @@
 using Xunit.Abstractions;
 
-namespace UITests.Android;
+namespace UITests;
 
 [Collection("UICollection")]
 public class AndroidTests : BaseTest
@@ -10,20 +10,5 @@ public class AndroidTests : BaseTest
     public AndroidTests(AppiumSetup setup, ITestOutputHelper testOutputHelper) : base(setup)
     {
         _testOutputHelper = testOutputHelper;
-    }
-
-
-    [Fact]
-    public void AppLaunches()
-    {
-        App.GetScreenshot().SaveAsFile($"{nameof(AppLaunches)}.png");
-    }
-
-    [Fact]
-    public void Test1()
-    {
-        // Arrange
-        // Act
-        // Assert
     }
 }

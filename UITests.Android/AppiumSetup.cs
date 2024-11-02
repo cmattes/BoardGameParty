@@ -38,6 +38,8 @@ public class AppiumSetup : IDisposable
 
     public void Dispose()
     {
+        driver?.TerminateApp("com.mattesgames.boardgameparty");
+
         driver?.Quit();
 
         // If an Appium server was started locally above, make sure we clean it up here

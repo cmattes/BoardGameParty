@@ -10,15 +10,17 @@
 
     <Grid RowDefinitions=".3*, .7*">
         <Border Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Margin="10" Padding="5"
-                BindingContext="{x:Reference BoardGameCollectionView}">
+                BindingContext="{x:Reference BoardGameCollectionView}" AutomationId="GameDetails">
             <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
                 <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"
                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large"
-                       Text="Select a game to see it's details"
-                       IsVisible="{Binding SelectedItem, Converter={StaticResource ObjIsNullToBool}}" /> <!-- , ConverterParameter=_logger -->
+                       Text="Select a game to see it's details" AutomationId="EmptyDetailsLabel"
+                       IsVisible="{Binding SelectedItem, Converter={StaticResource ObjIsNullToBool}}" />
+                <!-- , ConverterParameter=_logger -->
                 <Image Source="{Binding SelectedItem.GameImageURI}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
-                    <Label Text="{Binding SelectedItem.GameName}" FontSize="Medium" FontAttributes="Bold" />
+                    <Label Text="{Binding SelectedItem.GameName}" FontSize="Medium" FontAttributes="Bold"
+                           AutomationId="GameDetailsGameName" />
                     <Label Text="{Binding SelectedItem.GameDescription}" />
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" Grid.Row="1" Padding="2" VerticalOptions="Center">
@@ -31,15 +33,22 @@
             </Grid>
         </Border>
         <CollectionView Grid.Row="1" Grid.Column="0" x:Name="BoardGameCollectionView" ItemsLayout="VerticalList"
-                        SelectionMode="Single" EmptyView="No games to display yet!">
+                        SelectionMode="Single" AutomationId="BoardGamecv">
+            <CollectionView.EmptyView>
+                <ContentView>
+                    <Label Text="No games to display yet!" HorizontalOptions="Center" VerticalOptions="Center"
+                           FontAttributes="Bold" AutomationId="EmptyBoardGamecv" />
+                </ContentView>
+            </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <ContentView>
+                    <ContentView AutomationId="Game">
                         <Border StrokeThickness="2" StrokeShape="RoundRectangle 20,20,20,20" Margin="2">
                             <Grid ColumnDefinitions=".2*, .4*, .4*">
                                 <Image Source="{Binding GameImageURI}" Grid.Column="0" Grid.Row="0" />
                                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
-                                    <Label Text="{Binding GameName}" FontSize="Medium" FontAttributes="Bold" />
+                                    <Label Text="{Binding GameName}" FontSize="Medium" FontAttributes="Bold"
+                                           AutomationId="Name" />
                                     <Label Text="{Binding GameDescription}" />
                                 </VerticalStackLayout>
                                 <VerticalStackLayout Grid.Column="2" Grid.Row="0" Padding="2" VerticalOptions="Center">
