@@ -26,8 +26,8 @@
                 <VerticalStackLayout Grid.Column="1" Grid.Row="1" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedItem.MinutesPerGame, StringFormat='Play time: {0} mins'}" />
                     <HorizontalStackLayout>
-                        <Label Text="{ Binding SelectedItem.NumberOfPlayers.min, StringFormat='{0} to'}" />
-                        <Label Text="{ Binding SelectedItem.NumberOfPlayers.max, StringFormat=' {0} players'}" />
+                        <Label Text="{ Binding SelectedItem.MinimumNumberOfPlayers, StringFormat='{0} to'}" />
+                        <Label Text="{ Binding SelectedItem.MaximumNumberOfPlayers, StringFormat=' {0} players'}" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Grid>
@@ -54,8 +54,8 @@
                                 <VerticalStackLayout Grid.Column="2" Grid.Row="0" Padding="2" VerticalOptions="Center">
                                     <Label Text="{Binding MinutesPerGame, StringFormat='Play time: {0} mins'}" />
                                     <HorizontalStackLayout>
-                                        <Label Text="{ Binding NumberOfPlayers.min, StringFormat='{0} to'}" />
-                                        <Label Text="{ Binding NumberOfPlayers.max, StringFormat=' {0} players'}" />
+                                        <Label Text="{ Binding MinimumNumberOfPlayers, StringFormat='{0} to'}" />
+                                        <Label Text="{ Binding MaximumNumberOfPlayers, StringFormat=' {0} players'}" />
                                     </HorizontalStackLayout>
                                 </VerticalStackLayout>
                             </Grid>
