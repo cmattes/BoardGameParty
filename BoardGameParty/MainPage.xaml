@@ -17,11 +17,11 @@
                        Text="Select a game to see it's details" AutomationId="EmptyDetailsLabel"
                        IsVisible="{Binding SelectedItem, Converter={StaticResource ObjIsNullToBool}}" />
                 <!-- , ConverterParameter=_logger -->
-                <Image Source="{Binding SelectedItem.GameImageURI}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
+                <Image Source="{Binding SelectedItem.ImageURI}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
-                    <Label Text="{Binding SelectedItem.GameName}" FontSize="Medium" FontAttributes="Bold"
+                    <Label Text="{Binding SelectedItem.Name}" FontSize="Medium" FontAttributes="Bold"
                            AutomationId="GameDetailsGameName" />
-                    <Label Text="{Binding SelectedItem.GameDescription}" />
+                    <Label Text="{Binding SelectedItem.Description}" />
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" Grid.Row="1" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedItem.MinutesPerGame, StringFormat='Play time: {0} mins'}" />
@@ -45,11 +45,11 @@
                     <ContentView AutomationId="Game">
                         <Border StrokeThickness="2" StrokeShape="RoundRectangle 20,20,20,20" Margin="2">
                             <Grid ColumnDefinitions=".2*, .4*, .4*">
-                                <Image Source="{Binding GameImageURI}" Grid.Column="0" Grid.Row="0" />
+                                <Image Source="{Binding ImageURI}" Grid.Column="0" Grid.Row="0" />
                                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
-                                    <Label Text="{Binding GameName}" FontSize="Medium" FontAttributes="Bold"
+                                    <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold"
                                            AutomationId="Name" />
-                                    <Label Text="{Binding GameDescription}" />
+                                    <Label Text="{Binding Description}" />
                                 </VerticalStackLayout>
                                 <VerticalStackLayout Grid.Column="2" Grid.Row="0" Padding="2" VerticalOptions="Center">
                                     <Label Text="{Binding MinutesPerGame, StringFormat='Play time: {0} mins'}" />

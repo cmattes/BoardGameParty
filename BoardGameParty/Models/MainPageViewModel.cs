@@ -1,19 +1,18 @@
-﻿using System.Text.Json;
 using BoardGameParty.Interfaces;
-using BoardGameParty.Models;
 
-namespace BoardGameParty;
+namespace BoardGameParty.Models;
 
-public partial class MainPage : ContentPage
+public class MainPageViewModel
 {
-    public MainPage()
-    {
-        InitializeComponent();
-        
-        //BoardGameCollectionView.ItemsSource = MainPageViewModel.GetBoardGames();
-        //BoardGameCollectionView.ItemsSource = null;
-        BoardGameCollectionView.ItemsSource = GetBoardGames();
-    }
+    private readonly IAppStorage _appStorage;
+    private string _storageDirectory;
+
+    // public MainPageViewModel(IAppStorage appStorage)
+    // {
+    //     _appStorage = appStorage;
+    //     //_appStorage.SetupLocalStorage();
+    //
+    // }
     
     public List<BoardGame> GetBoardGames()
     {
