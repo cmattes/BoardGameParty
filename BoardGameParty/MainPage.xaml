@@ -16,7 +16,6 @@
                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large"
                        Text="Select a game to see it's details" AutomationId="EmptyDetailsLabel"
                        IsVisible="{Binding SelectedItem, Converter={StaticResource ObjIsNullToBool}}" />
-                <!-- , ConverterParameter=_logger -->
                 <Image Source="{Binding SelectedItem.ImageURI}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedItem.Name}" FontSize="Medium" FontAttributes="Bold"
