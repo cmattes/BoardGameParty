@@ -7,32 +7,28 @@ namespace BoardGameParty.Models;
 
 public class AppStorage : IAppStorage
 {
-    private readonly ILogger<AppStorage> _logger;
+    private readonly string _boardGameFileNameLocation;
     private readonly IFileSystem _fileSystem;
+    private readonly ILogger<AppStorage> _logger;
     private readonly string _storageDirectory;
-    private readonly string _localFileName = "LocalBoardGames.json";
-    
+
     public AppStorage(IFileSystem fileSystem, ILogger<AppStorage> logger, string storageDirectory)
     {
         _logger = logger;
         _fileSystem = fileSystem;
         _storageDirectory = storageDirectory;
+        _boardGameFileNameLocation = _fileSystem.Path.Combine(storageDirectory, "LocalBoardGames.json");
     }
 
     public async Task<IList<BoardGame>> SetupLocalStorage()
     {
-        
-        if (!_fileSystem.Directory.Exists(_storageDirectory))
-        {
-            _fileSystem.Directory.CreateDirectory(_storageDirectory);
-        }
+        _logger.LogError("Creating local storage");
+        if (!_fileSystem.Directory.Exists(_storageDirectory)) _fileSystem.Directory.CreateDirectory(_storageDirectory);
 
+        _logger.LogError("Storage directory created!");
         var localData = await LoadLocalData();
-        if (localData.Count > 0)
-        {
-            return localData;
-        }
-        
+        if (localData.Count > 0) return localData;
+
         // If internet access, load data from cloud and return
 
         return new List<BoardGame>();
@@ -51,30 +47,15 @@ public class AppStorage : IAppStorage
 
     public async Task SaveLocalData(IList<BoardGame> boardGames)
     {
-        await using var writeStream = _fileSystem.File.Create(_storageDirectory + _localFileName);
+        await using var writeStream = _fileSystem.File.Create(_boardGameFileNameLocation);
         await JsonSerializer.SerializeAsync(writeStream, boardGames);
-    }
-
-    public async Task AddNewBoardGame(BoardGame boardGame)
-    {
-        // Should be moved to model view of the Main Page
-    }
-
-    public async Task DeleteBoardGame(BoardGame boardGame)
-    {
-        // Should be moved to model view of the Main Page
-    }
-
-    public async Task UpdateBoardGame(BoardGame boardGame)
-    {
-        // Should be moved to model view of the Main Page
     }
 
     public async Task<IList<BoardGame>> LoadLocalData()
     {
-        if (!_fileSystem.File.Exists(_storageDirectory + _localFileName)) return new List<BoardGame>();
-        
-        await using var openStream = _fileSystem.File.OpenRead(_storageDirectory + _localFileName);
+        if (!_fileSystem.File.Exists(_boardGameFileNameLocation)) return new List<BoardGame>();
+
+        await using var openStream = _fileSystem.File.OpenRead(_boardGameFileNameLocation);
         return await JsonSerializer.DeserializeAsync<List<BoardGame>>(openStream) ?? new List<BoardGame>();
     }
 }

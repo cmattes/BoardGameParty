@@ -37,6 +37,41 @@ public abstract class BaseTest
 
         return true;
     }
+
+    protected void RestartApp()
+    {
+        App.TerminateApp("com.mattesgames.boardgameparty");
+        App.ActivateApp("com.mattesgames.boardgameparty");
+        VerifyAppIsReady("Board Game Party");
+    }
+    
+    protected void SetupTestData(bool testNeedsTestData)
+    {
+        var localBoardGamesData = "@com.mattesgames.boardgameparty/files/BoardGameData/LocalBoardGames.json";
+        
+        if (App is IOSDriver)
+        {
+            localBoardGamesData = "@com.mattesgames.boardgameparty:data/Library/BoardGameData/LocalBoardGames.json";
+        }
+
+        try
+        {
+            App.ExecuteScript("mobile: deleteFile", new Dictionary<string, object>()
+            {
+                {"remotePath", $"{localBoardGamesData}"}
+            });
+        }
+        catch (Exception e)
+        {
+            // ignored
+        }
+        
+        if (testNeedsTestData)
+        {
+            var contents = File.ReadAllText("BoardGamesTestData.json");
+            App.PushFile($"{localBoardGamesData}", contents);
+        }
+    }
     
     protected AppiumElement FindUIElement(string id)
     {

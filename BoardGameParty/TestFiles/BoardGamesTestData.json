@@ -1,0 +1,18 @@
+[
+  {
+    "Name" : "TestGame1",
+    "Description" : "A game that is for testing",
+    "ImageURI" : "dotnet_bot.png",
+    "MinimumNumberOfPlayers" : 1,
+    "MaximumNumberOfPlayers" : 4,
+    "MinutesPerGame" : 30
+  },
+  {
+    "Name" : "TestGame2",
+    "Description" : "A game that is for testing",
+    "ImageURI" : "dotnet_bot.png",
+    "MinimumNumberOfPlayers" : 3,
+    "MaximumNumberOfPlayers" : 5,
+    "MinutesPerGame" : 20
+  }
+]

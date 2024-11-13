@@ -11,9 +11,8 @@ public class MainPageTests : BaseTest
     public MainPageTests(AppiumSetup setup, ITestOutputHelper testOutputHelper) : base(setup)
     {
         _testOutputHelper = testOutputHelper;
-
-        var mainTitle = "Board Game Party";
-        VerifyAppIsReady(mainTitle);
+        
+        VerifyAppIsReady("Board Game Party");
     }
     
     [Fact]
@@ -35,6 +34,8 @@ public class MainPageTests : BaseTest
     {
         try
         {
+            SetupTestData(false);
+            RestartApp();
             var expectedText = "No games to display yet!";
 
             var emptycv = FindUIElement("EmptyBoardGamecv");
@@ -54,6 +55,8 @@ public class MainPageTests : BaseTest
     {
         try
         {
+            SetupTestData(true);
+            RestartApp();
             var expectedGameTitle = "TestGame1";
             
             var gameList = FindUIElement("BoardGamecv");
@@ -76,22 +79,11 @@ public class MainPageTests : BaseTest
     {
         try
         {
+            SetupTestData(true);
+            RestartApp();
             var expectedText = "Select a game to see it's details";
-            AppiumElement emptyDetails;
-
-            try
-            {
-                emptyDetails = FindUIElement("EmptyDetailsLabel");
-            }
-            catch (NoSuchElementException e)
-            {
-                App.TerminateApp("com.mattesgames.boardgameparty");
-                App.ActivateApp("com.mattesgames.boardgameparty");
-                VerifyAppIsReady("Board Game Party");
-                
-                emptyDetails = FindUIElement("EmptyDetailsLabel");
-            }
             
+            var emptyDetails = FindUIElement("EmptyDetailsLabel");
             var emptyDetailsText = emptyDetails.Text;
             
             Assert.Equal(expectedText, emptyDetailsText);
@@ -108,6 +100,8 @@ public class MainPageTests : BaseTest
     {
         try
         {
+            SetupTestData(true);
+            RestartApp();
             var expectedGameTitle = "TestGame1";
             
             var gameList = FindUIElement("BoardGamecv");

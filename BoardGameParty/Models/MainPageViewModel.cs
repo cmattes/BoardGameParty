@@ -7,27 +7,31 @@ public class MainPageViewModel
     private readonly IAppStorage _appStorage;
     private string _storageDirectory;
 
-    // public MainPageViewModel(IAppStorage appStorage)
-    // {
-    //     _appStorage = appStorage;
-    //     //_appStorage.SetupLocalStorage();
-    //
-    // }
-    
-    public List<BoardGame> GetBoardGames()
+    public MainPageViewModel(IAppStorage appStorage)
     {
-        return new List<BoardGame>
-        {
-            new("TestGame1")
-            {
-                Description = "A game that is for testing", MinutesPerGame = 30,
-                MinimumNumberOfPlayers = 1, MaximumNumberOfPlayers = 4, ImageURI = "dotnet_bot.png"
-            },
-            new("TestGame2")
-            {
-                Description = "A game that is for testing", MinutesPerGame = 20,
-                MinimumNumberOfPlayers = 3, MaximumNumberOfPlayers = 5, ImageURI = "dotnet_bot.png"
-            }
-        };
+        _appStorage = appStorage;
+        Task.Run(LoadBoardGames).Wait();
+    }
+
+    public IList<BoardGame> BoardGames { get; set; }
+
+    private async Task LoadBoardGames()
+    {
+        BoardGames = await _appStorage.SetupLocalStorage();
+    }
+
+    public async Task AddNewBoardGame(BoardGame boardGame)
+    {
+        // Should be moved to model view of the Main Page
+    }
+
+    public async Task DeleteBoardGame(BoardGame boardGame)
+    {
+        // Should be moved to model view of the Main Page
+    }
+
+    public async Task UpdateBoardGame(BoardGame boardGame)
+    {
+        // Should be moved to model view of the Main Page
     }
 }

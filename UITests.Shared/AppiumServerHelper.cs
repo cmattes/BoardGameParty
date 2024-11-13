@@ -1,4 +1,5 @@
 using OpenQA.Selenium.Appium.Service;
+//using OpenQA.Selenium.Appium.Service.Options;
 
 namespace UITests;
 
@@ -16,9 +17,20 @@ public static class AppiumServerHelper
             return;
         }
 
+        // Use if mobile: shell is needed for testing the UI
+        //var args = new OptionCollector().AddArguments(new KeyValuePair<string, string>("--allow-insecure=adb_shell", ""));
+        
+        // Example that would get added to BaseTest: 
+        // var folderExists = App.ExecuteScript("mobile: shell", new Dictionary<string, object>
+        // {
+        //     { "command", "run-as" },
+        //      { "args", new[] { "com.mattesgames.boardgameparty", "cat", $"{localBoardGamesData}" } }
+        // });
+
         var builder = new AppiumServiceBuilder()
             .WithIPAddress(host)
             .UsingPort(port);
+            //.WithArguments(args);
 
         // Start the server with the builder
         _appiumLocalService = builder.Build();
