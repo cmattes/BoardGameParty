@@ -8,7 +8,7 @@
         <converter:ObjectIsNullToBoolConverter x:Key="ObjIsNullToBool" />
     </ContentPage.Resources>
 
-    <Grid RowDefinitions=".3*, .7*">
+    <Grid RowDefinitions=".3*, .01*, .69*">
         <Border Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Margin="10" Padding="5"
                 BindingContext="{x:Reference BoardGameCollectionView}" AutomationId="GameDetails">
             <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
@@ -31,7 +31,8 @@
                 </VerticalStackLayout>
             </Grid>
         </Border>
-        <CollectionView Grid.Row="1" Grid.Column="0" x:Name="BoardGameCollectionView" ItemsLayout="VerticalList"
+        <BoxView Grid.Row="1" Grid.Column="0" Color="LightGray" HeightRequest="2" HorizontalOptions="Fill" />
+        <CollectionView Grid.Row="2" Grid.Column="0" x:Name="BoardGameCollectionView" ItemsLayout="VerticalList"
                         SelectionMode="Single" AutomationId="BoardGamecv" ItemsSource="{Binding BoardGames}">
             <CollectionView.EmptyView>
                 <ContentView>
