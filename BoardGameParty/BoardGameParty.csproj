@@ -71,8 +71,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.93" />
-        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.93" />
+        <PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+        <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.100" />
+        <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.100" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
         <PackageReference Include="Serilog" Version="4.1.0" />
         <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
@@ -81,6 +83,19 @@
         <PackageReference Include="TestableIO.System.IO.Abstractions" Version="21.1.3" />
         <PackageReference Include="TestableIO.System.IO.Abstractions.Extensions" Version="2.2.5" />
         <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="21.1.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Views\BoardGamesPage.xaml">
+        <SubType>Designer</SubType>
+      </MauiXaml>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\BoardGamesPage.xaml.cs">
+        <DependentUpon>BoardGamesPage.xaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>

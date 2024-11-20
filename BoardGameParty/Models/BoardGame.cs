@@ -1,4 +1,4 @@
-namespace BoardGameParty;
+namespace BoardGameParty.Models;
 
 public class BoardGame(string name)
 {

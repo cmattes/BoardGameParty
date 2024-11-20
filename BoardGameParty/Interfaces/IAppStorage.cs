@@ -1,3 +1,5 @@
+using BoardGameParty.Models;
+
 namespace BoardGameParty.Interfaces;
 
 public interface IAppStorage 

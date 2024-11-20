@@ -1,15 +1,15 @@
 using BoardGameParty.Interfaces;
+using BoardGameParty.Models;
 using Microsoft.Extensions.Logging;
 
-namespace BoardGameParty.Models;
+namespace BoardGameParty.ViewModels;
 
-public class MainPageViewModel
+public class BoardGamesViewModel
 {
     private readonly IAppStorage _appStorage;
-    private readonly ILogger<MainPageViewModel> _logger;
-    private string _storageDirectory;
+    private readonly ILogger<BoardGamesViewModel> _logger;
 
-    public MainPageViewModel(IAppStorage appStorage, ILogger<MainPageViewModel> logger)
+    public BoardGamesViewModel(IAppStorage appStorage, ILogger<BoardGamesViewModel> logger)
     {
         _appStorage = appStorage;
         _logger = logger;
