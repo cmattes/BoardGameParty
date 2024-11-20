@@ -3,40 +3,47 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="BoardGameParty.Views.BoardGamesPage">
+             xmlns:vm="clr-namespace:BoardGameParty.ViewModels"
+             xmlns:local="clr-namespace:BoardGameParty"
+             x:Class="BoardGameParty.Views.BoardGamesPage"
+             x:DataType="vm:BoardGamesViewModel"
+             Title="Board Game Party"
+             BindingContext="{x:Static local:App.BoardGamesListViewModel}">
     <ContentPage.Resources>
         <toolkit:IsNullConverter x:Key="IsNullConverter" />
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="+" AutomationId="AddBoardGameButton" />
     </ContentPage.ToolbarItems>
-    
+
     <Grid RowDefinitions=".3*, .01*, .69*">
         <Border Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Margin="10" Padding="5"
-                BindingContext="{x:Reference BoardGameCollectionView}" AutomationId="GameDetails">
+                AutomationId="GameDetails">
             <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
                 <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"
                        HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large"
                        Text="Select a game to see it's details" AutomationId="EmptyDetailsLabel"
-                       IsVisible="{Binding SelectedItem, Converter={StaticResource IsNullConverter}}" />
-                <Image Source="{Binding SelectedItem.ImageURI}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
+                       IsVisible="{Binding SelectedGame, Converter={StaticResource IsNullConverter}}" />
+                <Image Source="{Binding SelectedGame.ImageUri}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
-                    <Label Text="{Binding SelectedItem.Name}" FontSize="Medium" FontAttributes="Bold"
+                    <Label Text="{Binding SelectedGame.Name}" FontSize="Medium" FontAttributes="Bold"
                            AutomationId="GameDetailsGameName" />
-                    <Label Text="{Binding SelectedItem.Description}" />
+                    <Label Text="{Binding SelectedGame.Description}" />
                 </VerticalStackLayout>
                 <VerticalStackLayout Grid.Column="1" Grid.Row="1" Padding="2" VerticalOptions="Center">
-                    <Label Text="{Binding SelectedItem.MinutesPerGame, StringFormat='Play time: {0} mins'}" AutomationId="GameDetailsMinutesPerGame" />
+                    <Label Text="{Binding SelectedGame.MinutesPerGame, StringFormat='Play time: {0} mins'}"
+                           AutomationId="GameDetailsMinutesPerGame" />
                     <HorizontalStackLayout>
-                        <Label Text="{ Binding SelectedItem.MinimumNumberOfPlayers, StringFormat='{0} to'}" />
-                        <Label Text="{ Binding SelectedItem.MaximumNumberOfPlayers, StringFormat=' {0} players'}" />
+                        <Label Text="{ Binding SelectedGame.MinimumNumberOfPlayers, StringFormat='{0} to'}" />
+                        <Label Text="{ Binding SelectedGame.MaximumNumberOfPlayers, StringFormat=' {0} players'}" />
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Grid>
         </Border>
         <BoxView Grid.Row="1" Grid.Column="0" Color="LightGray" HeightRequest="2" HorizontalOptions="Fill" />
-        <CollectionView Grid.Row="2" Grid.Column="0" x:Name="BoardGameCollectionView" ItemsLayout="VerticalList"
-                        SelectionMode="Single" AutomationId="BoardGamecv" ItemsSource="{Binding BoardGames}">
+        <CollectionView Grid.Row="2" Grid.Column="0" ItemsLayout="VerticalList"
+                        SelectionMode="Single" AutomationId="BoardGamecv" ItemsSource="{Binding BoardGames}"
+                        SelectedItem="{Binding SelectedGame, Mode=OneWayToSource}">
             <CollectionView.EmptyView>
                 <ContentView>
                     <Label Text="No games to display yet!" HorizontalOptions="Center" VerticalOptions="Center"
@@ -44,18 +51,19 @@
                 </ContentView>
             </CollectionView.EmptyView>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="vm:GameViewModel">
                     <ContentView AutomationId="Game">
                         <Border StrokeThickness="2" StrokeShape="RoundRectangle 20,20,20,20" Margin="2">
                             <Grid ColumnDefinitions=".2*, .4*, .4*">
-                                <Image Source="{Binding ImageURI}" Grid.Column="0" Grid.Row="0" />
+                                <Image Source="{Binding ImageUri}" Grid.Column="0" Grid.Row="0" />
                                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
                                     <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold"
                                            AutomationId="Name" />
                                     <Label Text="{Binding Description}" />
                                 </VerticalStackLayout>
                                 <VerticalStackLayout Grid.Column="2" Grid.Row="0" Padding="2" VerticalOptions="Center">
-                                    <Label Text="{Binding MinutesPerGame, StringFormat='Play time: {0} mins'}" AutomationId="MinutesPerGame" />
+                                    <Label Text="{Binding MinutesPerGame, StringFormat='Play time: {0} mins'}"
+                                           AutomationId="MinutesPerGame" />
                                     <HorizontalStackLayout>
                                         <Label Text="{ Binding MinimumNumberOfPlayers, StringFormat='{0} to'}" />
                                         <Label Text="{ Binding MaximumNumberOfPlayers, StringFormat=' {0} players'}" />
