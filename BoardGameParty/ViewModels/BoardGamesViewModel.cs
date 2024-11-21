@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using BoardGameParty.Interfaces;
 using BoardGameParty.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -10,8 +11,6 @@ public class BoardGamesViewModel : ObservableObject
 {
     private readonly IAppStorage _appStorage;
     private readonly ILogger<BoardGamesViewModel> _logger;
-    private bool _gamesUpdating;
-
     private GameViewModel? _selectedGame;
 
     public BoardGamesViewModel(IAppStorage appStorage, ILogger<BoardGamesViewModel> logger)
@@ -19,7 +18,6 @@ public class BoardGamesViewModel : ObservableObject
         BoardGames = [];
         _appStorage = appStorage;
         _logger = logger;
-        GamesUpdating = true;
         Task.Run(LoadBoardGames);
     }
 
@@ -31,17 +29,15 @@ public class BoardGamesViewModel : ObservableObject
         set => SetProperty(ref _selectedGame, value);
     }
 
-    public bool GamesUpdating
-    {
-        get => _gamesUpdating;
-        set => SetProperty(ref _gamesUpdating, value);
-    }
+    public ICommand AddGameCommand { get; private set; }
 
     private async Task LoadBoardGames()
     {
         var games = await _appStorage.SetupLocalStorage();
-        foreach (var game in games) BoardGames.Add(new GameViewModel(game));
-        GamesUpdating = false;
+        foreach (var game in games)
+        {
+            BoardGames.Add(new GameViewModel(game));
+        }
     }
 
     public async Task AddNewBoardGame(BoardGame boardGame)

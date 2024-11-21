@@ -53,7 +53,6 @@ public class AppStorage : IAppStorage
 
     public async Task<IList<BoardGame>> LoadLocalData()
     {
-        //await Task.Delay(5000); for testing progress spinner later
         if (!_fileSystem.File.Exists(_boardGameFileNameLocation)) return new List<BoardGame>();
 
         await using var openStream = _fileSystem.File.OpenRead(_boardGameFileNameLocation);
