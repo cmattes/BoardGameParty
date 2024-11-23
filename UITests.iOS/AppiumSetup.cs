@@ -1,3 +1,6 @@
+using BoardGameParty.Interfaces;
+using BoardGameParty.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.iOS;
 
@@ -6,9 +9,11 @@ namespace UITests;
 public class AppiumSetup : IDisposable
 {
     private readonly AppiumDriver? driver;
+    private readonly IAppNavigationService navService;
 
     public AppiumSetup()
     {
+        navService = new AppNavigationService(new NullLogger<AppNavigationService>());
         // If you started an Appium server manually, make sure to comment out the next line
         // This line starts a local Appium server for you as part of the test run
         AppiumServerHelper.StartAppiumLocalServer();
@@ -33,6 +38,9 @@ public class AppiumSetup : IDisposable
     }
 
     public AppiumDriver App => driver ?? throw new NullReferenceException("AppiumDriver is null");
+
+    public IAppNavigationService NavigationService =>
+        navService ?? throw new NullReferenceException("NavService is null");
 
     public void Dispose()
     {

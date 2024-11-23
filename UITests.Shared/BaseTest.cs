@@ -1,3 +1,4 @@
+using BoardGameParty.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
@@ -12,6 +13,7 @@ public abstract class BaseTest
 {
     private readonly AppiumSetup _setup;
     protected AppiumDriver App => _setup.App;
+    protected IAppNavigationService NavigationService => _setup.NavigationService;
 
     public BaseTest(AppiumSetup setup)
     {
@@ -35,7 +37,7 @@ public abstract class BaseTest
             return _wait.Until(t => App.FindElement(MobileBy.XPath("//android.widget.TextView[@text=\"Board Game Party\"]")).Displayed);
         }
 
-        return true;
+        return false;
     }
 
     protected void RestartApp()
@@ -82,6 +84,11 @@ public abstract class BaseTest
         // }
 
         return App.FindElement(MobileBy.Id(id));
+    }
+    
+    protected AppiumElement FindUIElementByAccessibilityId(string id)
+    { 
+        return App.FindElement(MobileBy.AccessibilityId(id));
     }
     
     protected AppiumElement FindUIElement(string id, AppiumElement parentElement)

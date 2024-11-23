@@ -122,4 +122,15 @@ public class MainPageTests : BaseTest
             Assert.Fail();
         }
     }
+    
+    [Fact]
+    public async Task Navigate_to_non_existing_page_does_not_work()
+    {
+        SetupTestData(false);
+        RestartApp();
+
+        await NavigationService.NavigateTo("UnknownPage", false);
+        
+        Assert.True(VerifyAppIsReady("Board Game Party"));
+    }
 }
