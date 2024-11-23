@@ -1,13 +1,13 @@
-using BoardGameParty.Models;
+using BoardGameParty.Interfaces;
 using BoardGameParty.ViewModels;
 
 namespace BoardGameParty.Views;
 
 public partial class SaveBoardGamePage : ContentPage
 {
-    public SaveBoardGamePage(bool updatingGame)
+    public SaveBoardGamePage(bool updatingGame, IAppNavigationService navigationService)
     {
-        var saveBoardGameViewModel = new SaveBoardGameViewModel(updatingGame)
+        var saveBoardGameViewModel = new SaveBoardGameViewModel(updatingGame, navigationService)
         {
             ChangingGame = updatingGame 
                 ? App.CloneGameViewModel(App.BoardGamesListViewModel.SelectedGame) 

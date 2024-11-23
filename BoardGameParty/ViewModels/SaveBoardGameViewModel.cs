@@ -1,4 +1,5 @@
 using System.Windows.Input;
+using BoardGameParty.Interfaces;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -7,11 +8,13 @@ namespace BoardGameParty.ViewModels;
 public class SaveBoardGameViewModel : ObservableObject
 {
     private readonly bool _isUpdating;
+    private readonly IAppNavigationService _navigationService;
     private GameViewModel? _changingGame;
 
-    public SaveBoardGameViewModel(bool isUpdating)
+    public SaveBoardGameViewModel(bool isUpdating, IAppNavigationService navigationService)
     {
         _isUpdating = isUpdating;
+        _navigationService = navigationService;
         CancelCommand = new AsyncRelayCommand(CancelSave);
         SaveCommand = new AsyncRelayCommand(FinishSave, CanFinishSave);
         TextUpdatedCommand = new RelayCommand<TextChangedEventArgs>(CanSaveExecute);
@@ -44,7 +47,7 @@ public class SaveBoardGameViewModel : ObservableObject
             if (!cancel) return;
         }
 
-        await Shell.Current.Navigation.PopToRootAsync();
+        await _navigationService.ReturnToRoot();
     }
 
     private void CanSaveExecute(TextChangedEventArgs args)
@@ -86,7 +89,7 @@ public class SaveBoardGameViewModel : ObservableObject
             }
         }
 
-        await Shell.Current.Navigation.PopToRootAsync();
+        await _navigationService.ReturnToRoot();
     }
     
     private void PickImage()

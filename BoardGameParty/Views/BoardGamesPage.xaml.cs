@@ -6,7 +6,6 @@ public partial class BoardGamesPage : ContentPage
     {
         InitializeComponent();
         
-        BtnAdd.Clicked += async (s, e) => await Navigation.PushAsync(new SaveBoardGamePage(false));
         //BtnUpdate.Clicked += async (s, e) => await Navigation.PushAsync(new SaveBoardGamePage(true));
     }
 }

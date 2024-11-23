@@ -14,7 +14,7 @@
         <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="BtnAdd" Text="+" AutomationId="AddBoardGameButton" />
+        <ToolbarItem Text="+" Command="{Binding AddGameCommand}" AutomationId="AddBoardGameButton" />
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions=".3*, .01*, .69*">
