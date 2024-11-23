@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using BoardGameParty.Interfaces;
-using BoardGameParty.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.Logging;
 
@@ -9,15 +8,16 @@ namespace BoardGameParty.ViewModels;
 
 public class BoardGamesViewModel : ObservableObject
 {
-    private readonly IAppStorage _appStorage;
+    private readonly IAppStorageService _appStorageService;
     private readonly ILogger<BoardGamesViewModel> _logger;
     private GameViewModel? _selectedGame;
 
-    public BoardGamesViewModel(IAppStorage appStorage, ILogger<BoardGamesViewModel> logger)
+    public BoardGamesViewModel(IAppStorageService appStorageService, ILogger<BoardGamesViewModel> logger)
     {
-        BoardGames = [];
-        _appStorage = appStorage;
+        _appStorageService = appStorageService;
         _logger = logger;
+        BoardGames = [];
+        DeleteGameCommand = new Command<GameViewModel>(DeleteBoardGame);
         Task.Run(LoadBoardGames);
     }
 
@@ -29,29 +29,16 @@ public class BoardGamesViewModel : ObservableObject
         set => SetProperty(ref _selectedGame, value);
     }
 
-    public ICommand AddGameCommand { get; private set; }
+    public ICommand DeleteGameCommand { get; private set; }
 
     private async Task LoadBoardGames()
     {
-        var games = await _appStorage.SetupLocalStorage();
-        foreach (var game in games)
-        {
-            BoardGames.Add(new GameViewModel(game));
-        }
+        var games = await _appStorageService.SetupLocalStorage();
+        foreach (var game in games) BoardGames.Add(new GameViewModel(game));
     }
 
-    public async Task AddNewBoardGame(BoardGame boardGame)
+    private void DeleteBoardGame(GameViewModel boardGame)
     {
-        // Should be moved to model view of the Main Page
-    }
-
-    public async Task DeleteBoardGame(BoardGame boardGame)
-    {
-        // Should be moved to model view of the Main Page
-    }
-
-    public async Task UpdateBoardGame(BoardGame boardGame)
-    {
-        // Should be moved to model view of the Main Page
+        // Should remove the game from the list of games
     }
 }

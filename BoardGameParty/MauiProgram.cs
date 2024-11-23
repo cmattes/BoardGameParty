@@ -1,5 +1,5 @@
 ﻿using BoardGameParty.Interfaces;
-using BoardGameParty.Models;
+using BoardGameParty.Services;
 using BoardGameParty.ViewModels;
 using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
@@ -34,9 +34,9 @@ public static class MauiProgram
                 .CreateLogger());
 
         builder.Services.AddSingleton<IFileSystem, System.IO.Abstractions.FileSystem>();
-        builder.Services.AddSingleton<IAppStorage>(provider => new AppStorage(
+        builder.Services.AddSingleton<IAppStorageService>(provider => new AppStorageService(
             provider.GetRequiredService<IFileSystem>(),
-            provider.GetRequiredService<ILogger<AppStorage>>(),
+            provider.GetRequiredService<ILogger<AppStorageService>>(),
             Path.Combine(FileSystem.Current.AppDataDirectory, "BoardGameData")));
 
         builder.Services.AddSingleton<BoardGamesViewModel>();

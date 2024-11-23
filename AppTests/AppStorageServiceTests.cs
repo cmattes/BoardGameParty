@@ -1,29 +1,29 @@
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Text.Json;
-using BoardGameParty;
 using BoardGameParty.Interfaces;
 using BoardGameParty.Models;
+using BoardGameParty.Services;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using IFileSystem = System.IO.Abstractions.IFileSystem;
 
 namespace AppTests;
 
-public class AppStorageTests
+public class AppStorageServiceTests
 {
     private readonly string _boardGameFileNameLocation;
     private readonly IFileSystem _fileSystem;
-    private readonly ILogger<AppStorage> _logger = Substitute.For<ILogger<AppStorage>>();
-    private readonly IAppStorage _storage;
+    private readonly ILogger<AppStorageService> _logger = Substitute.For<ILogger<AppStorageService>>();
+    private readonly IAppStorageService _storageService;
     private readonly string _storageDirectory;
     private readonly IList<BoardGame> _testData;
 
-    public AppStorageTests()
+    public AppStorageServiceTests()
     {
         _fileSystem = new MockFileSystem();
         _storageDirectory = _fileSystem.Path.Combine(_fileSystem.CurrentDirectory().ToString(), "BoardGameData");
-        _storage = new AppStorage(_fileSystem, _logger, _storageDirectory);
+        _storageService = new AppStorageService(_fileSystem, _logger, _storageDirectory);
         _boardGameFileNameLocation = _fileSystem.Path.Combine(_storageDirectory, "LocalBoardGames.json");
         _testData = JsonSerializer.Deserialize<List<BoardGame>>(File.ReadAllText("BoardGamesTestData.json"));
     }
@@ -48,7 +48,7 @@ public class AppStorageTests
     {
         SetupDirectory(false);
 
-        var localData = await _storage.SetupLocalStorage();
+        var localData = await _storageService.SetupLocalStorage();
 
         Assert.True(_fileSystem.Directory.Exists(_storageDirectory));
         Assert.Empty(localData);
@@ -61,7 +61,7 @@ public class AppStorageTests
         SetupDirectory(true);
         SetupTestDataFile();
 
-        var localData = await _storage.SetupLocalStorage();
+        var localData = await _storageService.SetupLocalStorage();
 
         Assert.True(_fileSystem.Directory.Exists(_storageDirectory));
         Assert.True(_fileSystem.File.Exists(_boardGameFileNameLocation));
@@ -73,7 +73,7 @@ public class AppStorageTests
     {
         SetupDirectory(true);
 
-        await _storage.SaveLocalData(_testData);
+        await _storageService.SaveLocalData(_testData);
 
         Assert.True(_fileSystem.File.Exists(_boardGameFileNameLocation));
 
@@ -88,7 +88,7 @@ public class AppStorageTests
         SetupDirectory(true);
         SetupTestDataFile();
 
-        var localData = await _storage.LoadLocalData();
+        var localData = await _storageService.LoadLocalData();
 
         Assert.Equal(_testData, localData);
     }

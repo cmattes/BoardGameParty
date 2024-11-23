@@ -2,7 +2,7 @@ using BoardGameParty.Models;
 
 namespace BoardGameParty.Interfaces;
 
-public interface IAppStorage
+public interface IAppStorageService
 {
     Task<IList<BoardGame>> SetupLocalStorage();
     Task SaveToCloud();
