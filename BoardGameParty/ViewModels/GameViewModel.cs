@@ -3,14 +3,29 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace BoardGameParty.ViewModels;
 
-public class GameViewModel(BoardGame game) : ObservableObject
+public class GameViewModel : ObservableObject
 {
-    private string _description = game.Description;
-    private string _imageUri = game.ImageUri;
-    private int _maximumNumberOfPlayers = game.MaximumNumberOfPlayers;
-    private int _minimumNumberOfPlayers = game.MinimumNumberOfPlayers;
-    private int _minutesPerGame = game.MinutesPerGame;
-    private string _name = game.Name;
+    private string _name = string.Empty;
+    private string _description = string.Empty;
+    private string _imageUri = string.Empty;
+    private int _maximumNumberOfPlayers;
+    private int _minimumNumberOfPlayers;
+    private int _minutesPerGame;
+
+    public GameViewModel(BoardGame game)
+    {
+        Name = game.Name;
+        Description = game.Description;
+        ImageUri = game.ImageUri;
+        MaximumNumberOfPlayers = game.MaximumNumberOfPlayers;
+        MinimumNumberOfPlayers = game.MinimumNumberOfPlayers;
+        MinutesPerGame = game.MinutesPerGame;
+    }
+    
+    public GameViewModel()
+    {
+        
+    }
 
     public string Name
     {
