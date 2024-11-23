@@ -11,19 +11,19 @@
              BindingContext="{x:Static local:App.BoardGamesListViewModel}">
     <ContentPage.Resources>
         <toolkit:IsNullConverter x:Key="IsNullConverter" />
+        <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="+" AutomationId="AddBoardGameButton" Command="{Binding AddGameCommand}" />
+        <ToolbarItem x:Name="BtnAdd" Text="+" AutomationId="AddBoardGameButton" />
     </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions=".3*, .01*, .69*">
-        <Border Grid.Row="0" Grid.Column="0" HorizontalOptions="Center" Margin="10" Padding="5"
-                AutomationId="GameDetails">
+        <Label Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large"
+               Text="Select a game to see it's details" AutomationId="EmptyDetailsLabel"
+               IsVisible="{Binding SelectedGame, Converter={StaticResource IsNullConverter}}" />
+        <Border Grid.Row="0" HorizontalOptions="Center" Margin="10" Padding="5"
+                AutomationId="GameDetails" IsVisible="{Binding SelectedGame, Converter={StaticResource IsNotNullConverter}}">
             <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
-                <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"
-                       HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large"
-                       Text="Select a game to see it's details" AutomationId="EmptyDetailsLabel"
-                       IsVisible="{Binding SelectedGame, Converter={StaticResource IsNullConverter}}" />
                 <Image Source="{Binding SelectedGame.ImageUri}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedGame.Name}" FontSize="Medium" FontAttributes="Bold"
@@ -40,9 +40,9 @@
                 </VerticalStackLayout>
             </Grid>
         </Border>
-        <BoxView Grid.Row="1" Grid.Column="0" Color="LightGray" HeightRequest="2" HorizontalOptions="Fill" />
-        <CollectionView Grid.Row="2" Grid.Column="0" ItemsLayout="VerticalList"
-                        SelectionMode="Single" AutomationId="BoardGamecv" ItemsSource="{Binding BoardGames}"
+        <BoxView Grid.Row="1" Color="LightGray" HeightRequest="2" HorizontalOptions="Fill" />
+        <CollectionView Grid.Row="2" ItemsLayout="VerticalList" SelectionMode="Single" AutomationId="BoardGamecv" 
+                        ItemsSource="{Binding BoardGames}"
                         SelectedItem="{Binding SelectedGame, Mode=OneWayToSource}">
             <CollectionView.EmptyView>
                 <ContentView>
