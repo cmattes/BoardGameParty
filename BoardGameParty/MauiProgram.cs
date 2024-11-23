@@ -39,6 +39,7 @@ public static class MauiProgram
             provider.GetRequiredService<ILogger<AppStorageService>>(),
             Path.Combine(FileSystem.Current.AppDataDirectory, "BoardGameData")));
         builder.Services.AddSingleton<IAppNavigationService, AppNavigationService>();
+        builder.Services.AddSingleton<IAppAlertService, AppAlertService>();
 
         builder.Services.AddSingleton<BoardGamesViewModel>();
         // builder.Services.AddTransient<BoardGamesPage>(provider => new BoardGamesPage()

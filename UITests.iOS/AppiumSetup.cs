@@ -13,7 +13,7 @@ public class AppiumSetup : IDisposable
 
     public AppiumSetup()
     {
-        navService = new AppNavigationService(new NullLogger<AppNavigationService>());
+        navService = new AppNavigationService(new NullLogger<AppNavigationService>(), new AppAlertService());
         // If you started an Appium server manually, make sure to comment out the next line
         // This line starts a local Appium server for you as part of the test run
         AppiumServerHelper.StartAppiumLocalServer();

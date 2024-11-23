@@ -10,11 +10,13 @@ public class SaveBoardGameViewModel : ObservableObject
     private readonly bool _isUpdating;
     private readonly IAppNavigationService _navigationService;
     private GameViewModel? _changingGame;
+    private IAppAlertService _alertService;
 
-    public SaveBoardGameViewModel(bool isUpdating, IAppNavigationService navigationService)
+    public SaveBoardGameViewModel(bool isUpdating, IAppNavigationService navigationService, IAppAlertService alertService)
     {
         _isUpdating = isUpdating;
         _navigationService = navigationService;
+        _alertService = alertService;
         CancelCommand = new AsyncRelayCommand(CancelSave);
         SaveCommand = new AsyncRelayCommand(FinishSave, CanFinishSave);
         TextUpdatedCommand = new RelayCommand<TextChangedEventArgs>(CanSaveExecute);
@@ -40,11 +42,11 @@ public class SaveBoardGameViewModel : ObservableObject
                                          || ChangingGame.MinimumNumberOfPlayers > 0 ||
                                          ChangingGame.MaximumNumberOfPlayers > 0 || ChangingGame.MinutesPerGame > 0))
         {
-            var cancel = await Shell.Current.DisplayAlert("Cancel",
+            var cancelConfirmed = await _alertService.ShowAlert("Cancel",
                 $"You have unsaved changes.{Environment.NewLine}Continue to Cancel?",
-                "Yes", "No");
+                "Yes", "No"); 
 
-            if (!cancel) return;
+            if (!cancelConfirmed) return;
         }
 
         await _navigationService.ReturnToRoot();

@@ -7,17 +7,19 @@ namespace BoardGameParty.Services;
 public class AppNavigationService : IAppNavigationService
 {
     private readonly ILogger<AppNavigationService> _logger;
+    private readonly IAppAlertService _appAlertService;
 
-    public AppNavigationService(ILogger<AppNavigationService> logger)
+    public AppNavigationService(ILogger<AppNavigationService> logger, IAppAlertService appAlertService)
     {
         _logger = logger;
+        _appAlertService = appAlertService;
     }
 
     public async Task NavigateTo(string pageName, bool pageParameter)
     {
         ContentPage? page = pageName switch
         {
-            "SaveBoardGamePage" => new SaveBoardGamePage(pageParameter, this),
+            "SaveBoardGamePage" => new SaveBoardGamePage(pageParameter, this, _appAlertService),
             _ => null
         };
 
