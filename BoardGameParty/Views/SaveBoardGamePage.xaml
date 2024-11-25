@@ -29,7 +29,7 @@
     
     <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto" ColumnDefinitions=".33*, .33*, .33*" Padding="5">
         <Label Grid.Row="0" Grid.ColumnSpan="3" Style="{StaticResource LabelStyle}" Text="Name:" />
-        <Entry x:Name="NameEntry" Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource EntryStyle}" MaxLength="60" Placeholder="Enter game name here" Text="{Binding ChangingGame.Name}" />
+        <Entry x:Name="NameEntry" Grid.Row="1" Grid.ColumnSpan="3" Style="{StaticResource EntryStyle}" MaxLength="60" Placeholder="Enter game name here" Text="{Binding ChangingGame.Name}" AutomationId="NameTextField" />
 
         <Label Grid.Row="2" Grid.ColumnSpan="3" Style="{StaticResource LabelStyle}" Text="Description:" />
         <Editor Grid.Row="3" Grid.ColumnSpan="3" Margin="5" MaxLength="200" HeightRequest="100" Placeholder="Enter a description here" Text="{Binding ChangingGame.Description}">
@@ -51,8 +51,8 @@
         <Label Grid.Row="10" Grid.ColumnSpan="3" Style="{StaticResource LabelStyle}" Text="Maximum number of players:" />
         <Entry Grid.Row="11" Grid.ColumnSpan="3" Style="{StaticResource EntryStyle}" MaxLength="5" Placeholder="Enter the smallest player count here" Text="{Binding ChangingGame.MaximumNumberOfPlayers}" Keyboard="Numeric" />
         
-        <Button Grid.Row="12" Grid.Column="0" Style="{StaticResource ButtonStyle}" Text="Cancel" Command="{Binding CancelCommand}" />
-        <Button Grid.Row="12" Grid.Column="2" Style="{StaticResource ButtonStyle}" Text="Save" Command="{Binding SaveCommand}" />
+        <Button Grid.Row="12" Grid.Column="0" Style="{StaticResource ButtonStyle}" Text="Cancel" Command="{Binding CancelCommand}" AutomationId="CancelSaveButton" />
+        <Button Grid.Row="12" Grid.Column="2" Style="{StaticResource ButtonStyle}" Text="Save" Command="{Binding SaveCommand}" AutomationId="SaveButton" />
         
     </Grid>
 </ContentPage>

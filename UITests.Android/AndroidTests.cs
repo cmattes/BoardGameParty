@@ -13,37 +13,6 @@ public class AndroidTests : BaseTest
     }
 
     [Fact]
-    public void Add_button_adds_a_new_game_to_the_list()
-    {
-        try
-        {
-            SetupTestData(false);
-            RestartApp();
-
-            var expectedText = "No games to display yet!";
-            var emptycv = FindUIElement("EmptyBoardGamecv");
-            Assert.Equal(expectedText, emptycv.Text);
-
-            var expectedGameTitle = "TestGame1";
-            var addButton = FindUIElementByAccessibilityId("AddBoardGameButton");
-            addButton.Click();
-
-            var gameList = FindUIElement("BoardGamecv");
-            var games = FindUIElements("Game", gameList);
-            Assert.NotNull(games);
-            Assert.True(games.Count > 0);
-
-            var firstGameTitle = FindUIElement("Name", games[0]);
-            Assert.Equal(expectedGameTitle, firstGameTitle.Text);
-        }
-        catch (Exception e)
-        {
-            _testOutputHelper.WriteLine(e.ToString());
-            Assert.Fail();
-        }
-    }
-
-    [Fact]
     public void Edit_button_updates_the_selected_game()
     {
         try

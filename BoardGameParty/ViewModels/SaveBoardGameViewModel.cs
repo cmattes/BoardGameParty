@@ -42,7 +42,7 @@ public class SaveBoardGameViewModel : ObservableObject
                                          || ChangingGame.MinimumNumberOfPlayers > 0 ||
                                          ChangingGame.MaximumNumberOfPlayers > 0 || ChangingGame.MinutesPerGame > 0))
         {
-            var cancelConfirmed = await _alertService.ShowAlert("Cancel",
+            var cancelConfirmed = await _alertService.ShowAlert("Cancel Save",
                 $"You have unsaved changes.{Environment.NewLine}Continue to Cancel?",
                 "Yes", "No"); 
 

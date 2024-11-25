@@ -1,5 +1,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Appium.Android;
+using OpenQA.Selenium.Appium.iOS;
 using Xunit.Abstractions;
 
 namespace UITests;
@@ -11,22 +13,6 @@ public class MainPageTests : BaseTest
     public MainPageTests(AppiumSetup setup, ITestOutputHelper testOutputHelper) : base(setup)
     {
         _testOutputHelper = testOutputHelper;
-        
-        VerifyAppIsReady("Board Game Party");
-    }
-    
-    [Fact]
-    public void Verify_app_launches()
-    {
-        // Arrange
-        var screenshotName = "app_screenshot.png";
-
-        // Act
-        App.GetScreenshot().SaveAsFile(screenshotName);
-        Thread.Sleep(500);
-
-        // Assert
-        Assert.True(File.Exists(screenshotName), "Failed to gather a screenshot.");
     }
     
     [Fact]
@@ -131,6 +117,154 @@ public class MainPageTests : BaseTest
 
         await NavigationService.NavigateTo("UnknownPage", false);
         
-        Assert.True(VerifyAppIsReady("Board Game Party"));
+        Assert.True(VerifyAppIsReady(_boardGamesPageTitle));
+    }
+    
+    [Fact]
+    public void Add_button_navigates_to_save_page()
+    {
+        try
+        {
+            SetupTestData(false);
+            RestartApp();
+            
+            var addButton = FindUIElementByAccessibilityId("AddBoardGameButton");
+            addButton.Click();
+            
+            Assert.True(VerifyAppIsReady(_savePageTitle));
+        }
+        catch (Exception e)
+        {
+            _testOutputHelper.WriteLine(e.ToString());
+            Assert.Fail();
+        }
+    }
+    
+    [Fact]
+    public void When_no_change_on_save_page_cancel_button_returns_to_main_page()
+    {
+        try
+        {
+            SetupTestData(false);
+            RestartApp();
+            
+            var addButton = FindUIElementByAccessibilityId("AddBoardGameButton");
+            addButton.Click();
+            Assert.True(VerifyAppIsReady(_savePageTitle));
+            
+            var cancelButton = FindUIElement("CancelSaveButton");
+            cancelButton.Click();
+            
+            Assert.True(VerifyAppIsReady(_boardGamesPageTitle));
+        }
+        catch (Exception e)
+        {
+            _testOutputHelper.WriteLine(e.ToString());
+            Assert.Fail();
+        }
+    }
+    
+    [Fact]
+    public void When_change_occurs_on_save_page_cancel_button_displays_alert()
+    {
+        try
+        {
+            SetupTestData(false);
+            RestartApp();
+            var expectedTitle = "Cancel Save";
+            
+            var addButton = FindUIElementByAccessibilityId("AddBoardGameButton");
+            addButton.Click();
+            Assert.True(VerifyAppIsReady(_savePageTitle));
+            
+            var nameTextField = FindUIElement("NameTextField");
+            nameTextField.SendKeys("Test");
+            SendReturnKey(nameTextField);
+            
+            var cancelButton = FindUIElement("CancelSaveButton");
+            cancelButton.Click();
+            
+            if (App is IOSDriver)
+            {
+                Assert.True(VerifyAlertIsDisplayed("Cancel Save"));
+            }
+            else if (App is AndroidDriver)
+            {
+                Assert.True(VerifyAlertIsDisplayed("com.mattesgames.boardgameparty:id/alertTitle"));
+            }
+        }
+        catch (Exception e)
+        {
+            _testOutputHelper.WriteLine(e.ToString());
+            Assert.Fail();
+        }
+    }
+    
+    [Fact]
+    public void When_name_updates_on_save_page_save_button_enables()
+    {
+        try
+        {
+            SetupTestData(false);
+            RestartApp();
+
+            var addButton = FindUIElementByAccessibilityId("AddBoardGameButton");
+            addButton.Click();
+            Assert.True(VerifyAppIsReady(_savePageTitle));
+            
+            var saveButton = FindUIElement("SaveButton");
+            Assert.False(saveButton.Enabled);
+            
+            var nameTextField = FindUIElement("NameTextField");
+            nameTextField.SendKeys("Test");
+            SendReturnKey(nameTextField);
+            
+            Assert.True(saveButton.Enabled);
+        }
+        catch (Exception e)
+        {
+            _testOutputHelper.WriteLine(e.ToString());
+            Assert.Fail();
+        }
+    }
+
+    [Fact]
+    public void Save_page_save_button_returns_and_adds_a_new_game_to_the_main_page()
+    {
+        try
+        {
+            SetupTestData(false);
+            RestartApp();
+
+            var expectedText = "No games to display yet!";
+            var emptycv = FindUIElement("EmptyBoardGamecv");
+            Assert.Equal(expectedText, emptycv.Text);
+
+            var expectedGameTitle = "TestGame1";
+            var addButton = FindUIElementByAccessibilityId("AddBoardGameButton");
+            addButton.Click();
+            Assert.True(VerifyAppIsReady(_savePageTitle));
+            
+            var nameTextField = FindUIElement("NameTextField");
+            nameTextField.SendKeys("TestGame1");
+            SendReturnKey(nameTextField);
+            
+            var saveButton = FindUIElement("SaveButton");
+            saveButton.Click();
+            Assert.True(VerifyAppIsReady(_boardGamesPageTitle));
+
+            var gameList = FindUIElement("BoardGamecv");
+            var games = FindUIElements("Game", gameList);
+            Assert.NotNull(games);
+            Assert.True(games.Count > 0);
+
+            var firstGameTitle = FindUIElement("Name", games[0]);
+            Assert.Equal(expectedGameTitle, firstGameTitle.Text);
+        }
+        catch (Exception e)
+        {
+            _testOutputHelper.WriteLine(e.ToString());
+            Assert.Fail();
+        }
     }
 }

@@ -3,7 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Appium;
 using OpenQA.Selenium.Appium.Android;
 using OpenQA.Selenium.Appium.iOS;
-using OpenQA.Selenium.Appium.Windows;
+//using OpenQA.Selenium.Appium.Windows;
 using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
 
@@ -14,6 +14,8 @@ public abstract class BaseTest
     private readonly AppiumSetup _setup;
     protected AppiumDriver App => _setup.App;
     protected IAppNavigationService NavigationService => _setup.NavigationService;
+    protected string _boardGamesPageTitle = "Board Game Party";
+    protected string _savePageTitle = "Save Game";
 
     public BaseTest(AppiumSetup setup)
     {
@@ -30,11 +32,27 @@ public abstract class BaseTest
     {
         if (App is IOSDriver)
         {
-            return _wait.Until(t => App.FindElement(MobileBy.XPath("//XCUIElementTypeStaticText[@name=\"Board Game Party\"]")).Displayed);
+            return _wait.Until(t => App.FindElement(MobileBy.XPath($"//XCUIElementTypeStaticText[@name=\"{title}\"]")).Displayed);
         }
         else if (App is AndroidDriver)
         {
-            return _wait.Until(t => App.FindElement(MobileBy.XPath("//android.widget.TextView[@text=\"Board Game Party\"]")).Displayed);
+            return _wait.Until(t => App.FindElement(MobileBy.XPath($"//android.widget.TextView[@text=\"{title}\"]")).Displayed);
+        }
+
+        return false;
+    }
+    
+    protected bool VerifyAlertIsDisplayed(string title)
+    {
+        if (App is IOSDriver)
+        {
+            
+            return _wait.Until(t => App.FindElement(MobileBy.XPath($"//XCUIElementTypeStaticText[@name=\"{title}\"]")).Displayed);
+        }
+        else if (App is AndroidDriver)
+        {
+            
+            return _wait.Until(t => App.FindElement(MobileBy.XPath($"//android.widget.TextView[@resource-id=\"{title}\"]")).Displayed);
         }
 
         return false;
@@ -44,7 +62,7 @@ public abstract class BaseTest
     {
         App.TerminateApp("com.mattesgames.boardgameparty");
         App.ActivateApp("com.mattesgames.boardgameparty");
-        VerifyAppIsReady("Board Game Party");
+        VerifyAppIsReady(_boardGamesPageTitle);
     }
     
     protected void SetupTestData(bool testNeedsTestData)
@@ -72,6 +90,15 @@ public abstract class BaseTest
         {
             var contents = File.ReadAllText("BoardGamesTestData.json");
             App.PushFile($"{localBoardGamesData}", contents);
+        }
+    }
+
+    protected void SendReturnKey(AppiumElement nameTextField)
+    {
+        if (App is IOSDriver)
+        {
+            Thread.Sleep(1000);
+            nameTextField.SendKeys(Keys.Return);
         }
     }
     
