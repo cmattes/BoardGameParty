@@ -52,11 +52,6 @@ public class SaveBoardGameViewModel : ObservableObject
         await _navigationService.ReturnToRoot();
     }
 
-    private void CanSaveExecute(TextChangedEventArgs args)
-    {
-        SaveCommand.NotifyCanExecuteChanged();
-    }
-
     private bool CanFinishSave()
     {
         if (ChangingGame is null || string.IsNullOrWhiteSpace(ChangingGame.Name)) return false;
@@ -89,9 +84,16 @@ public class SaveBoardGameViewModel : ObservableObject
             {
                 App.BoardGamesListViewModel.BoardGames.Add(game);
             }
+
+            await App.BoardGamesListViewModel.SaveBoardGames();
         }
 
         await _navigationService.ReturnToRoot();
+    }
+    
+    private void CanSaveExecute(TextChangedEventArgs args)
+    {
+        SaveCommand.NotifyCanExecuteChanged();
     }
     
     private void PickImage()

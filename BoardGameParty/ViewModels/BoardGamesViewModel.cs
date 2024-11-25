@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using BoardGameParty.Interfaces;
+using BoardGameParty.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,18 @@ public class BoardGamesViewModel : ObservableObject
     private async Task AddBoardGame()
     {
         await _navigationService.NavigateTo("SaveBoardGamePage", false);
+    }
+
+    public async Task SaveBoardGames()
+    {
+        var games = new List<BoardGame>();
+        foreach (var gameViewModel in BoardGames)
+        {
+            games.Add(new BoardGame(gameViewModel.Name, gameViewModel.Description, gameViewModel.ImageUri, 
+                gameViewModel.MinimumNumberOfPlayers, gameViewModel.MaximumNumberOfPlayers, gameViewModel.MinutesPerGame));
+        }
+        
+        await _appStorageService.SaveLocalData(games);
     }
 
     private void DeleteBoardGame(GameViewModel boardGame)
