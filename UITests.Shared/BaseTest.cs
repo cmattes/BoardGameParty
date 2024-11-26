@@ -61,7 +61,9 @@ public abstract class BaseTest
     protected void RestartApp()
     {
         App.TerminateApp("com.mattesgames.boardgameparty");
+        Thread.Sleep(1000);
         App.ActivateApp("com.mattesgames.boardgameparty");
+        Thread.Sleep(1000);
         VerifyAppIsReady(_boardGamesPageTitle);
     }
     
