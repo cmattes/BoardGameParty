@@ -18,6 +18,10 @@ public partial class SaveBoardGamePage : ContentPage
         
         InitializeComponent();
         this.Loaded += SaveBoardGamePage_Loaded;
+        
+        SaveButton.Text = updatingGame ? "Update" : "Save";
+        NameTextField.IsReadOnly = updatingGame;
+        NameTextField.BackgroundColor = updatingGame ? Colors.LightGray : Colors.White;
     }
     
     protected override bool OnBackButtonPressed()

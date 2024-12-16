@@ -15,13 +15,15 @@ public class BoardGamesViewModel : ObservableObject
     private readonly IAppNavigationService _navigationService;
     private GameViewModel? _selectedGame;
 
-    public BoardGamesViewModel(IAppStorageService appStorageService, ILogger<BoardGamesViewModel> logger, IAppNavigationService navigationService)
+    public BoardGamesViewModel(IAppStorageService appStorageService, ILogger<BoardGamesViewModel> logger,
+        IAppNavigationService navigationService)
     {
         _appStorageService = appStorageService;
         _logger = logger;
         _navigationService = navigationService;
         BoardGames = [];
         AddGameCommand = new AsyncRelayCommand(AddBoardGame);
+        EditGameCommand = new AsyncRelayCommand(EditBoardGame);
         DeleteGameCommand = new Command<GameViewModel>(DeleteBoardGame);
         Task.Run(LoadBoardGames);
     }
@@ -36,6 +38,7 @@ public class BoardGamesViewModel : ObservableObject
 
     public ICommand DeleteGameCommand { get; private set; }
     public IAsyncRelayCommand AddGameCommand { get; private set; }
+    public IAsyncRelayCommand EditGameCommand { get; private set; }
 
     private async Task LoadBoardGames()
     {
@@ -48,15 +51,19 @@ public class BoardGamesViewModel : ObservableObject
         await _navigationService.NavigateTo("SaveBoardGamePage", false);
     }
 
+    private async Task EditBoardGame()
+    {
+        await _navigationService.NavigateTo("SaveBoardGamePage", true);
+    }
+
     public async Task SaveBoardGames()
     {
         var games = new List<BoardGame>();
         foreach (var gameViewModel in BoardGames)
-        {
-            games.Add(new BoardGame(gameViewModel.Name, gameViewModel.Description, gameViewModel.ImageUri, 
-                gameViewModel.MinimumNumberOfPlayers, gameViewModel.MaximumNumberOfPlayers, gameViewModel.MinutesPerGame));
-        }
-        
+            games.Add(new BoardGame(gameViewModel.Name, gameViewModel.Description, gameViewModel.ImageUri,
+                gameViewModel.MinimumNumberOfPlayers, gameViewModel.MaximumNumberOfPlayers,
+                gameViewModel.MinutesPerGame));
+
         await _appStorageService.SaveLocalData(games);
     }
 

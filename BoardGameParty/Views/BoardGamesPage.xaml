@@ -23,14 +23,15 @@
                IsVisible="{Binding SelectedGame, Converter={StaticResource IsNullConverter}}" />
         <Border Grid.Row="0" HorizontalOptions="Center" Margin="10" Padding="5"
                 AutomationId="GameDetails" IsVisible="{Binding SelectedGame, Converter={StaticResource IsNotNullConverter}}">
-            <Grid ColumnDefinitions="*, *" RowDefinitions="*, *">
-                <Image Source="{Binding SelectedGame.ImageUri}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" />
-                <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
+            <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *">
+                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Source="{Binding SelectedGame.ImageUri}" />
+                <Button Grid.Column="1" Grid.Row="0" Text="Edit" Command="{Binding EditGameCommand}" AutomationId="EditBoardGameButton" />
+                <VerticalStackLayout Grid.Column="1" Grid.Row="1" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedGame.Name}" FontSize="Medium" FontAttributes="Bold"
                            AutomationId="GameDetailsGameName" />
                     <Label Text="{Binding SelectedGame.Description}" />
                 </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="1" Grid.Row="1" Padding="2" VerticalOptions="Center">
+                <VerticalStackLayout Grid.Column="1" Grid.Row="2" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedGame.MinutesPerGame, StringFormat='Play time: {0} mins'}"
                            AutomationId="GameDetailsMinutesPerGame" />
                     <HorizontalStackLayout>

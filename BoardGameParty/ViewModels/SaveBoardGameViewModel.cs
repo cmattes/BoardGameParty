@@ -7,12 +7,13 @@ namespace BoardGameParty.ViewModels;
 
 public class SaveBoardGameViewModel : ObservableObject
 {
+    private readonly IAppAlertService _alertService;
+    private readonly GameViewModel? _changingGame;
     private readonly bool _isUpdating;
     private readonly IAppNavigationService _navigationService;
-    private GameViewModel? _changingGame;
-    private IAppAlertService _alertService;
 
-    public SaveBoardGameViewModel(bool isUpdating, IAppNavigationService navigationService, IAppAlertService alertService)
+    public SaveBoardGameViewModel(bool isUpdating, IAppNavigationService navigationService,
+        IAppAlertService alertService)
     {
         _isUpdating = isUpdating;
         _navigationService = navigationService;
@@ -26,7 +27,7 @@ public class SaveBoardGameViewModel : ObservableObject
     public GameViewModel? ChangingGame
     {
         get => _changingGame;
-        set => SetProperty(ref _changingGame, value);
+        init => SetProperty(ref _changingGame, value);
     }
 
     public IAsyncRelayCommand CancelCommand { get; }
@@ -36,15 +37,33 @@ public class SaveBoardGameViewModel : ObservableObject
 
     private async Task CancelSave()
     {
-        if (ChangingGame is not null && (!string.IsNullOrWhiteSpace(ChangingGame.Name) ||
-                                         !string.IsNullOrWhiteSpace(ChangingGame.Description) ||
-                                         !string.IsNullOrWhiteSpace(ChangingGame.ImageUri)
-                                         || ChangingGame.MinimumNumberOfPlayers > 0 ||
-                                         ChangingGame.MaximumNumberOfPlayers > 0 || ChangingGame.MinutesPerGame > 0))
+        if (ChangingGame is not null && _isUpdating)
+        {
+            var selected = App.BoardGamesListViewModel.SelectedGame;
+            if (selected is not null && (!ChangingGame.Description.Equals(selected.Description)
+                                         || !ChangingGame.ImageUri.Equals(selected.ImageUri)
+                                         || !ChangingGame.MinutesPerGame.Equals(selected.MinutesPerGame)
+                                         || !ChangingGame.MinimumNumberOfPlayers.Equals(selected.MinimumNumberOfPlayers)
+                                         || !ChangingGame.MaximumNumberOfPlayers.Equals(selected
+                                             .MaximumNumberOfPlayers)))
+            {
+                var cancelConfirmed = await _alertService.ShowAlert("Cancel Save",
+                    $"You have unsaved changes.{Environment.NewLine}Continue to Cancel?",
+                    "Yes", "No");
+
+                if (!cancelConfirmed) return;
+            }
+        }
+        else if (ChangingGame is not null && (!string.IsNullOrWhiteSpace(ChangingGame.Name) ||
+                                              !string.IsNullOrWhiteSpace(ChangingGame.Description) ||
+                                              !string.IsNullOrWhiteSpace(ChangingGame.ImageUri)
+                                              || ChangingGame.MinimumNumberOfPlayers > 0 ||
+                                              ChangingGame.MaximumNumberOfPlayers > 0 ||
+                                              ChangingGame.MinutesPerGame > 0))
         {
             var cancelConfirmed = await _alertService.ShowAlert("Cancel Save",
                 $"You have unsaved changes.{Environment.NewLine}Continue to Cancel?",
-                "Yes", "No"); 
+                "Yes", "No");
 
             if (!cancelConfirmed) return;
         }
@@ -90,14 +109,13 @@ public class SaveBoardGameViewModel : ObservableObject
 
         await _navigationService.ReturnToRoot();
     }
-    
-    private void CanSaveExecute(TextChangedEventArgs args)
+
+    private void CanSaveExecute(TextChangedEventArgs? args)
     {
         SaveCommand.NotifyCanExecuteChanged();
     }
-    
+
     private void PickImage()
     {
-        
     }
 }
