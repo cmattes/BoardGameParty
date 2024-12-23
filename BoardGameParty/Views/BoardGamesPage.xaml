@@ -14,24 +14,28 @@
         <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="+" Command="{Binding AddGameCommand}" AutomationId="AddBoardGameButton" />
+        <ToolbarItem IconImageSource="add_button.png" Command="{Binding AddGameCommand}" AutomationId="AddBoardGameButton" />
     </ContentPage.ToolbarItems>
 
-    <Grid RowDefinitions=".3*, .01*, .69*">
+    <Grid RowDefinitions=".4*, .01*, .59*">
         <Label Grid.Row="0" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" FontSize="Large"
                Text="Select a game to see it's details" AutomationId="EmptyDetailsLabel"
                IsVisible="{Binding SelectedGame, Converter={StaticResource IsNullConverter}}" />
-        <Border Grid.Row="0" HorizontalOptions="Center" Margin="10" Padding="5"
-                AutomationId="GameDetails" IsVisible="{Binding SelectedGame, Converter={StaticResource IsNotNullConverter}}">
-            <Grid ColumnDefinitions="*, *" RowDefinitions="*, *, *">
-                <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Source="{Binding SelectedGame.ImageUri}" />
-                <Button Grid.Column="1" Grid.Row="0" Text="Edit" Command="{Binding EditGameCommand}" AutomationId="EditBoardGameButton" />
-                <VerticalStackLayout Grid.Column="1" Grid.Row="1" Padding="2" VerticalOptions="Center">
-                    <Label Text="{Binding SelectedGame.Name}" FontSize="Medium" FontAttributes="Bold"
-                           AutomationId="GameDetailsGameName" />
+        <Border Grid.Row="0" HorizontalOptions="Fill" VerticalOptions="Fill" Margin="10" Padding="5"
+                AutomationId="GameDetails"
+                IsVisible="{Binding SelectedGame, Converter={StaticResource IsNotNullConverter}}">
+            <Grid ColumnDefinitions="*, *" RowDefinitions="Auto, Auto, *, Auto" ColumnSpacing="5" RowSpacing="1">
+                <Button Grid.Column="0" Grid.Row="0" HorizontalOptions="Start" BackgroundColor="Coral" Text="Delete"
+                        Command="{Binding DeleteGameCommand}" AutomationId="DeleteBoardGameButton" />
+                <Image Grid.Column="0" Grid.Row="1" Grid.RowSpan="4" Source="{Binding SelectedGame.ImageUri}" />
+                <Button Grid.Column="1" Grid.Row="0" HorizontalOptions="End" Text="Edit"
+                        Command="{Binding EditGameCommand}" AutomationId="EditBoardGameButton" />
+                <Label Grid.Column="1" Grid.Row="1" Text="{Binding SelectedGame.Name}" FontSize="Medium"
+                       FontAttributes="Bold" AutomationId="GameDetailsGameName" />
+                <ScrollView Grid.Column="1" Grid.Row="2" Orientation="Vertical" VerticalScrollBarVisibility="Always">
                     <Label Text="{Binding SelectedGame.Description}" />
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="1" Grid.Row="2" Padding="2" VerticalOptions="Center">
+                </ScrollView>
+                <VerticalStackLayout Grid.Column="1" Grid.Row="3" Padding="2" VerticalOptions="Center">
                     <Label Text="{Binding SelectedGame.MinutesPerGame, StringFormat='Play time: {0} mins'}"
                            AutomationId="GameDetailsMinutesPerGame" />
                     <HorizontalStackLayout>
@@ -42,9 +46,9 @@
             </Grid>
         </Border>
         <BoxView Grid.Row="1" Color="LightGray" HeightRequest="2" HorizontalOptions="Fill" />
-        <CollectionView Grid.Row="2" ItemsLayout="VerticalList" SelectionMode="Single" AutomationId="BoardGamecv" 
+        <CollectionView Grid.Row="2" ItemsLayout="VerticalList" SelectionMode="Single" AutomationId="BoardGamecv"
                         ItemsSource="{Binding BoardGames}"
-                        SelectedItem="{Binding SelectedGame, Mode=OneWayToSource}">
+                        SelectedItem="{Binding SelectedGame}">
             <CollectionView.EmptyView>
                 <ContentView>
                     <Label Text="No games to display yet!" HorizontalOptions="Center" VerticalOptions="Center"
@@ -58,9 +62,11 @@
                             <Grid ColumnDefinitions=".2*, .4*, .4*">
                                 <Image Source="{Binding ImageUri}" Grid.Column="0" Grid.Row="0" />
                                 <VerticalStackLayout Grid.Column="1" Grid.Row="0" Padding="2" VerticalOptions="Center">
-                                    <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold"
-                                           AutomationId="Name" />
-                                    <Label Text="{Binding Description}" />
+                                    <Label Grid.Column="1" Grid.Row="0" Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold"
+                                           LineBreakMode="TailTruncation" AutomationId="Name" />
+                                <!-- <ScrollView Grid.Column="1" Grid.Row="1" Orientation="Vertical" VerticalScrollBarVisibility="Always"> -->
+                                    <Label Text="{Binding Description}" LineBreakMode="TailTruncation" />
+                                <!-- </ScrollView> -->
                                 </VerticalStackLayout>
                                 <VerticalStackLayout Grid.Column="2" Grid.Row="0" Padding="2" VerticalOptions="Center">
                                     <Label Text="{Binding MinutesPerGame, StringFormat='Play time: {0} mins'}"

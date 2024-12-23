@@ -40,7 +40,7 @@
 
         <Label Grid.Row="4" Grid.Column="0" Style="{StaticResource LabelStyle}" Text="Game image:" />
         <Button Grid.Row="4" Grid.Column="2" Style="{StaticResource ButtonStyle}" Text="Pick Image" Command="{Binding GetImageCommand}" />
-        <Entry Grid.Row="5" Grid.ColumnSpan="3" Style="{StaticResource EntryStyle}" MaxLength="100" Placeholder="Select an image with the button" Text="{Binding ChangingGame.ImageUri}" />
+        <Entry Grid.Row="5" Grid.ColumnSpan="3" Style="{StaticResource EntryStyle}" MaxLength="100" Placeholder="Select an image with the button" IsReadOnly="True" BackgroundColor="LightGray" Text="{Binding ChangingGame.ImageUri}" />
         
         <Label Grid.Row="6" Grid.ColumnSpan="3" Style="{StaticResource LabelStyle}" Text="Play time in minutes:" />
         <Entry Grid.Row="7" Grid.ColumnSpan="3" Style="{StaticResource EntryStyle}" MaxLength="5" Placeholder="Enter the play time here" Text="{Binding ChangingGame.MinutesPerGame}" Keyboard="Numeric" />

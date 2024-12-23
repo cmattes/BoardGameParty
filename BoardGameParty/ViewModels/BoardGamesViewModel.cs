@@ -13,18 +13,20 @@ public class BoardGamesViewModel : ObservableObject
     private readonly IAppStorageService _appStorageService;
     private readonly ILogger<BoardGamesViewModel> _logger;
     private readonly IAppNavigationService _navigationService;
+    private readonly IAppAlertService _alertService;
     private GameViewModel? _selectedGame;
 
     public BoardGamesViewModel(IAppStorageService appStorageService, ILogger<BoardGamesViewModel> logger,
-        IAppNavigationService navigationService)
+        IAppNavigationService navigationService, IAppAlertService alertService)
     {
         _appStorageService = appStorageService;
         _logger = logger;
         _navigationService = navigationService;
+        _alertService = alertService;
         BoardGames = [];
         AddGameCommand = new AsyncRelayCommand(AddBoardGame);
         EditGameCommand = new AsyncRelayCommand(EditBoardGame);
-        DeleteGameCommand = new Command<GameViewModel>(DeleteBoardGame);
+        DeleteGameCommand = new AsyncRelayCommand(DeleteBoardGame);
         Task.Run(LoadBoardGames);
     }
 
@@ -67,8 +69,19 @@ public class BoardGamesViewModel : ObservableObject
         await _appStorageService.SaveLocalData(games);
     }
 
-    private void DeleteBoardGame(GameViewModel boardGame)
+    private async Task DeleteBoardGame()
     {
-        // Should remove the game from the list of games
+        if (SelectedGame == null) return;
+        
+        var deleteConfirmed = await _alertService.ShowAlert("Delete Board Game",
+            $"You are about to delete board game: {SelectedGame.Name}.{Environment.NewLine}Continue deletion?",
+            "Yes", "No");
+
+        if (!deleteConfirmed) return;
+        
+        BoardGames.Remove( BoardGames.First(model => model.Name == SelectedGame.Name));
+        SelectedGame = null;
+        
+        await SaveBoardGames();
     }
 }

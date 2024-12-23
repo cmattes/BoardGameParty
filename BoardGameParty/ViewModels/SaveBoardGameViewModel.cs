@@ -92,6 +92,11 @@ public class SaveBoardGameViewModel : ObservableObject
         //Check that the Name is Unique
         if (ChangingGame is not null)
         {
+            if (string.IsNullOrWhiteSpace(ChangingGame.ImageUri))
+            {
+                ChangingGame.ImageUri = "no_image.png";
+            }
+            
             var game = App.CloneGameViewModel(ChangingGame);
             if (game is not null && _isUpdating)
             {
@@ -103,6 +108,8 @@ public class SaveBoardGameViewModel : ObservableObject
             {
                 App.BoardGamesListViewModel.BoardGames.Add(game);
             }
+            
+            App.BoardGamesListViewModel.SelectedGame = App.BoardGamesListViewModel.BoardGames.First(model => model.Name == ChangingGame.Name);
 
             await App.BoardGamesListViewModel.SaveBoardGames();
         }
